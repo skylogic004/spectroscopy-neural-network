@@ -32,13 +32,13 @@ In this project, wrapper scripts have been written to aid in launching the maste
 Master process is started as follows. Square brackets (`[--abc def]`) denote optional arguments, angle brackets (`<abc>`) are required.
 
 ```bash
-	python HPO_start_master.py <experiment_name> <max_evals> [--DB_host 127.0.0.1] [--DB_port 27017] [--out_dir .] --which_cmd_space <which_cmd_space>
+python HPO_start_master.py <experiment_name> <max_evals> [--DB_host 127.0.0.1] [--DB_port 27017] [--out_dir .] --which_cmd_space <which_cmd_space>
 ```
 
 For example, to run HPO on the $D_3$ split, with ensembling enabled, as reported in the paper in Figure 3, panel E, labelled *ensembles-HPO* $D_3$ run the following command:
 
 ```bash
-    python HPO_start_master.py "name_for_this_experiment" 2000 --out_dir=/home/ubuntu/ --which_cmd_space=ensembles-HPO_D3_split
+python HPO_start_master.py "name_for_this_experiment" 2000 --out_dir=/home/ubuntu/ --which_cmd_space=ensembles-HPO_D3_split
 ```
 
 
@@ -55,10 +55,10 @@ We used SSH port forwarding between an Ubuntu server and compute cluster worker 
 but in this example we assume a worker running on the same node as the master:
 
 ```bash
-    #!/bin/bash
-	experiment=name_for_this_experiment
-	LOCALPORT=27017
-	python -u HPO_hyperopt_mongo_worker.py $experiment "127.0.0.1" $LOCALPORT --timeout_hours 11
+#!/bin/bash
+experiment=name_for_this_experiment
+LOCALPORT=27017
+python -u HPO_hyperopt_mongo_worker.py $experiment "127.0.0.1" $LOCALPORT --timeout_hours 11
 ```
 
 This process runs for 11 hours, then quits after completing the next trial.
@@ -79,7 +79,7 @@ The following command is repeated 50 times produces the boxplot in Figure 3, pan
 This trains 1 ensemble of 40 models:
 
 ```bash
-    python train_neural_network.py main --resultsDir "C:\my_results" --m "CNNBensemble" --run_baseline --n_in_parallel 4 --n_gpu 1  --n_training_runs 40 --fold_spec "{'type': 'rand_split'}"
+python train_neural_network.py main --resultsDir "C:\my_results" --m "CNNBensemble" --run_baseline --n_in_parallel 4 --n_gpu 1  --n_training_runs 40 --fold_spec "{'type': 'rand_split'}"
 ```
 
 Set `n_in_parallel` to the number of models to train simultaneously (2 or 3 is typical for the average workstation) and `n_gpu` to 0 to disable the GPU and 1 to enable all available GPUs.
@@ -90,7 +90,7 @@ This command shows how to train using the best-found hyperparameters from HPO us
 This trains 1 ensemble of 40 models:
 
 ```bash
-    python train_neural_network.py main --resultsDir "C:\my_results" --m "BEST_ensembles-HPO_D3_split" --cmd_args_fpath "./best_models_from_HPO/ensembles-HPO_D3_split.pyon" --n_in_parallel 3 --n_gpu 1
+python train_neural_network.py main --resultsDir "C:\my_results" --m "BEST_ensembles-HPO_D3_split" --cmd_args_fpath "./best_models_from_HPO/ensembles-HPO_D3_split.pyon" --n_in_parallel 3 --n_gpu 1
 ```
 
 In the paper we report the distribution of RMSE scores by repeating the above training 50 times. This produces 50 ensembles, each with its own RMSE on the test set, as reported in the boxplot in Figure 3, panel E labelled *ensembles-HPO* $D_3$.
@@ -124,7 +124,7 @@ These are then evaluated by training an ensemble on the original split ($D_{rand
 in the config files, this is achieved by setting
 
 ```python
-    'fold_spec': {'type': 'rand_split'}
+'fold_spec': {'type': 'rand_split'}
 ```
 
 Training is repeated 50 times to produce a distribution of RMSE scores.
