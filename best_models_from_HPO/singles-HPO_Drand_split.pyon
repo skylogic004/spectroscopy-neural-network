@@ -1,0 +1,29 @@
+# THIS IS SETUP FOR EVALUATION (ensemble on original split)
+#
+# which_cmd_space: I1_rand_split
+# split_name: rand_split
+# tid: 1251
+# DM_dev_RMSE = 0.5137
+# DM_test_RMSE = 1.0837
+
+{
+  # 'm': '[I1-orig-1251]',
+  'kth_fold': 0,
+  'n_training_runs': 40,
+  'fold_spec': {'type': 'rand_split'},
+  'out_dir_naming': 'AUTO',
+  'LR_sched_settings': {'type': 'ReduceLROnPlateau'},
+  
+  'dataset_name': 'mangoes_Dario',
+  'batch_size': 128,
+  'n_full_epochs': 750,
+  'LR': 0.005,
+  'input_features': ['NIR_preprocessed_and_outliers_removed',],
+  'FC_L2_reg_scale': 0.0005439112272373596,
+  'FC_init': 'he_normal',
+  'conv_L2_reg_scale': 0.0005439112272373596,
+  'conv_filter_init': 'he_normal',
+  'conv_n_filters': 7,
+  'conv_filter_width': 29,
+  'FC_layer_sizes': [88, 44, 22],
+}

@@ -1,0 +1,6 @@
+[paths]
+results_dir = "S:/mangoes-paper-code-results"
+
+[plot]
+loss_history = true
+target_vs_predictions = true
