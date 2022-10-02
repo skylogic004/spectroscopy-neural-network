@@ -48,7 +48,7 @@ Once the "master" is running. Run one or more workers. Workers must have access 
 The worker process is started as follows:
 
 ```bash
-	python HPO_hyperopt_mongo_worker.py <experiment_name> [--DB_host 127.0.0.1] [--DB_port 27017] [--n_jobs 9999999] [--timeout_hours None]
+python HPO_hyperopt_mongo_worker.py <experiment_name> [--DB_host 127.0.0.1] [--DB_port 27017] [--n_jobs 9999999] [--timeout_hours None]
 ```
 
 We used SSH port forwarding between an Ubuntu server and compute cluster worker nodes, 
@@ -76,7 +76,6 @@ Here are two examples of training an ensemble of 40:
 ### 1. Random split
 
 The following command is repeated 50 times produces the boxplot in Figure 3, panel C labelled $CNN_B^{ensemble}$. 
-This trains 1 ensemble of 40 models:
 
 ```bash
 python train_neural_network.py main --resultsDir "C:\my_results" --m "CNNBensemble" --run_baseline --n_in_parallel 4 --n_gpu 1  --n_training_runs 40 --fold_spec "{'type': 'rand_split'}"
