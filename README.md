@@ -35,7 +35,7 @@ Master process is started as follows. Square brackets (`[--abc def]`) denote opt
 	python HPO_start_master.py <experiment_name> <max_evals> [--DB_host 127.0.0.1] [--DB_port 27017] [--out_dir .] --which_cmd_space <which_cmd_space>
 ```
 
-For example, to run HPO on the *D_3* split, with ensembling enabled, as reported in the paper in Figure 3, panel E, labelled *ensembles-HPO* & *D_3* run the following command:
+For example, to run HPO on the $D_3$ split, with ensembling enabled, as reported in the paper in Figure 3, panel E, labelled *ensembles-HPO* $D_3$ run the following command:
 
 ```bash
     python HPO_start_master.py "name_for_this_experiment" 2000 --out_dir=/home/ubuntu/ --which_cmd_space=ensembles-HPO_D3_split
@@ -84,16 +84,16 @@ This trains 1 ensemble of 40 models:
 
 Set `n_in_parallel` to the number of models to train simultaneously (2 or 3 is typical for the average workstation) and `n_gpu` to 0 to disable the GPU and 1 to enable all available GPUs.
 
-### 2. D3 split with ensembling
+### 2. $D3$ split with ensembling
 
-This command shows how to train using the best-found hyperparameters from HPO using *ensembles-HPO* & *D_3*.
+This command shows how to train using the best-found hyperparameters from HPO using *ensembles-HPO* & $D_3$.
 This trains 1 ensemble of 40 models:
 
 ```bash
     python train_neural_network.py main --resultsDir "C:\my_results" --m "BEST_ensembles-HPO_D3_split" --cmd_args_fpath "./best_models_from_HPO/ensembles-HPO_D3_split.pyon" --n_in_parallel 3 --n_gpu 1
 ```
 
-In the paper we report the distribution of RMSE scores by repeating the above training 50 times. This produces 50 ensembles, each with its own RMSE on the test set, as reported in the boxplot in Figure 3, panel E labelled *ensembles-HPO* & *D_3*.
+In the paper we report the distribution of RMSE scores by repeating the above training 50 times. This produces 50 ensembles, each with its own RMSE on the test set, as reported in the boxplot in Figure 3, panel E labelled *ensembles-HPO* $D_3$.
 
 ### Test-set RMSE
 `train_neural_network.py` saves the final predictions for each sample in the dataset to the file `best_model_predictions.pkl`.
@@ -111,16 +111,16 @@ Five models are evaluated, each with a different set of hyperparameter configura
 Hyperparameter configurations were obtained by HPO on five different choices of validation set and calibration set; the test set is not used in HPO. 
 Specifically, the validation sets for each "split" are:
 
-- *D_rand*: a random as in previous work
-- *D_2017*: the latest harvest season (2017)
-- *D_1*: first 33% (sorted by date)
-- *D_2*: middle 33% (sorted by date)
-- *D_3*: last 33% (sorted by date)
+- $D_{rand}$: a random as in previous work
+- $D_{2017}$: the latest harvest season (2017)
+- $D_1$: first 33% (sorted by date)
+- $D_2$: middle 33% (sorted by date)
+- $D_3$: last 33% (sorted by date)
 
 The best hyperparameter configurations from each "split"
 are saved in configuration files in `best_models_from_HPO`
 in `*.pyon` format (these are Python dictionaries written in native Python code).
-These are then evaluated by training an ensemble on the original split (*D_rand*);
+These are then evaluated by training an ensemble on the original split ($D_{rand}$);
 in the config files, this is achieved by setting
 
 ```python
