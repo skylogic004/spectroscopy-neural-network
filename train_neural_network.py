@@ -243,11 +243,9 @@ def build_and_train(resultsDir=None,
 		if ('global_id_fpath' in configData['paths']):
 			global_id_fpath = configData['paths']['global_id_fpath']
 
-		directory_tag = None #'{},{},{}'.format(enc_arch, dec_arch, net_arch)
 		use_task_run_id = True
 
 	elif (out_dir_naming == 'MANUAL'):
-		directory_tag = None
 		use_task_run_id = False
 
 	else:
@@ -257,7 +255,6 @@ def build_and_train(resultsDir=None,
 	out_dir, task_run_id, task_key = prepare_out_dir_and_logging(
 		TASK_KEY, 
 		SYMLINK_FPATH, 
-		# directory_tag=''.format(enc_arch, dec_arch, net_arch), 
 		resultsDir=resultsDir, 
 		comment_message=m,
 		cmd_args_dict=cmd_args_dict,
@@ -281,7 +278,7 @@ def build_and_train(resultsDir=None,
 
 	logger.info(f'Now CUDA_VISIBLE_DEVICES = {os.environ.get("CUDA_VISIBLE_DEVICES", "NOT SET")}')
 
-	############################# PARSE/PRINT SETTINGS ###############################
+	############################# PRINT INFO ###############################
 
 	logger.info('\n===DEBUG INFO===')
 	logger.info(f'COMPUTER_NAME: {COMPUTER_NAME}')
@@ -303,7 +300,7 @@ def build_and_train(resultsDir=None,
 	############################ LOAD DATA ####################################
 	logger.info('===LOAD DATA===')
 		
-	if (dataset_name in generic_loader.EXPECTED_BATCH_NAMES):
+	if (dataset_name in generic_loader.EXPECTED_DATASET_NAMES):
 		# load
 		if (use_unsupervised):
 			assert 'n_unsuper' in fold_spec and fold_spec['n_unsuper'] > 0, 'Cannot do use_unsupervised=True when there\'s no unsupervised data (because n_unsuper is 0)!'
@@ -315,7 +312,7 @@ def build_and_train(resultsDir=None,
 	cur_data = return_dict['cur_data']
 	assay_columns_dict = return_dict['assay_columns_dict']
 	feature_columns = return_dict['feature_columns'] # OrderedDict, where keys are input features and values are lists of column names
-	extra_columns = return_dict['extra_columns']
+
 
 
 	combine_train_dev = fold_spec.get('combine_train_dev', False) # False if not specified
@@ -339,14 +336,12 @@ def build_and_train(resultsDir=None,
 	else: # specified ONE target
 		which_targets = [which_targets_set]
 
-	target_columns_in_use = [column for el, column in assay_columns_dict.items() if el in which_targets]
-	n_assay_features = len(target_columns_in_use)
+	# get column name for each target (sometimes these are different, sometimes they are the same)
+	target_columns_in_use = [assay_columns_dict[target] for target in which_targets]
 	logger.info('which_targets (n={}) = {}'.format(len(which_targets), which_targets))
-	logger.info('target_columns_in_use (n={}) = {}'.format(n_assay_features, target_columns_in_use))
+	logger.info('target_columns_in_use (n={}) = {}'.format(len(target_columns_in_use), target_columns_in_use))
 
 	test_set_in_use = 'test' in sets_in_use
-
-
 	doing_supervised_network = True
 
 	### importance scales
@@ -372,9 +367,9 @@ def build_and_train(resultsDir=None,
 																  sets_in_use, 
 																  combine_train_dev)
 
-	########################################### TF2 ##################################################
 
-	# === Prepare data for training (from my usual format into format that Dario's TF2 code uses)
+	# === Prepare data for training (from my usual format into format used by `reset_then_init_then_train(...)`)
+	assert len(input_features)==1
 	input_feature = input_features[0]
 	the_data = {}
 	for _set in sets_in_use:

@@ -23,7 +23,7 @@ DATASETS = {
 	'mangoes_Dario': mangoes.load_Dario_data,
 }
 
-EXPECTED_BATCH_NAMES = list(DATASETS.keys())
+EXPECTED_DATASET_NAMES = list(DATASETS.keys())
 
 
 def load(dataset_name, cache_dir, kth_fold, fold_spec, use_unsupervised):
@@ -93,7 +93,7 @@ def get_kth_fold(kth_fold, data_dict, fold_spec):
 
 		# use the data splits specified in column
 		data_dict_fold['unsuper'] = None
-		data_dict_fold['train'] = df[df[column_with_split]=='calibrate']
+		data_dict_fold['train'] = df[df[column_with_split].isin(['calibrate', 'training', 'train'])]
 		data_dict_fold['dev'] = df[df[column_with_split].isin(['validate', 'dev', 'tuning'])]
 		data_dict_fold['test'] = df[df[column_with_split]=='test']
 
