@@ -66,11 +66,6 @@ BEST_CHECKPOINT_DIR = 'best_checkpoint'
 CONFIG_FPATH = "config.toml"
 CONFIG_DEFAULT_FPATH = "config_DEFAULT.toml"
 
-if (IS_LINUX): # probably a server
-	RECHECK_CONFIG_EVERY_N = 5000 # 5000 normally, 100 for local testing
-else: # Windows - so probably my local PC
-	RECHECK_CONFIG_EVERY_N = 100
-
 SETS = ['train', 'dev', 'test']
 NOT_TEST_SETS = ['train', 'dev']
 SETS_EXCEPT_DEV = ['train', 'test']
